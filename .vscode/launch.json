@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GatewayApplication",
+            "request": "launch",
+            "mainClass": "com.apigateway.gateway.GatewayApplication",
+            "projectName": "gateway"
+        },
+        {
+            "type": "java",
             "name": "RestuserApplication",
             "request": "launch",
             "mainClass": "com.restuser.restuser.RestuserApplication",

@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,11 +29,11 @@ public class UserManager {
     public ResponseEntity<String> addVoyage(String destination, Integer herissonId, Integer fk_utilisateur,
             Integer fk_fusee) {
 
-        Map<String, String> voyageInfos = new HashMap<>();
-        voyageInfos.put("destination", destination);
-        voyageInfos.put("herissonId", herissonId.toString());
-        voyageInfos.put("fk_utilisateur", fk_utilisateur.toString());
-        voyageInfos.put("fk_fusee", fk_fusee.toString());
+        MultiValueMap<String, String> voyageInfos = new LinkedMultiValueMap<>();
+        voyageInfos.add("destination", destination);
+        voyageInfos.add("herissonId", herissonId.toString());
+        voyageInfos.add("fk_utilisateur", fk_utilisateur.toString());
+        voyageInfos.add("fk_fusee", fk_fusee.toString());
 
         ResponseEntity<String> response = restTemplate.postForEntity(url + "addVoyage", voyageInfos, String.class);
 
@@ -60,25 +63,26 @@ public class UserManager {
 
     public ResponseEntity<String> addHerisson(String nom, String caracteristique, Integer fk_utilisateur) {
 
-        Map<String, String> herissonInfos = new HashMap<>();
-        herissonInfos.put("nom", nom);
-        herissonInfos.put("caracteristique", caracteristique);
-        herissonInfos.put("fk_utilisateur", fk_utilisateur.toString());
+        MultiValueMap<String, String> herissonInfos = new LinkedMultiValueMap<>();
+        herissonInfos.add("nom", nom);
+        herissonInfos.add("caracteristique", caracteristique);
+        herissonInfos.add("fk_utilisateur", fk_utilisateur.toString());
 
         ResponseEntity<String> response = restTemplate.postForEntity(url + "addHerisson", herissonInfos, String.class);
 
         return response;
     }
 
-    public ResponseEntity<String> modifyHerisson(Integer pk_herisson, String nom, String caracteristique, Integer fk_utilisateur) {
+    public ResponseEntity<String> modifyHerisson(Integer pk_herisson, String nom, String caracteristique,
+            Integer fk_utilisateur) {
 
-        Map<String, String> herissonInfos = new HashMap<>();
-        herissonInfos.put("pk_herisson", pk_herisson.toString());
-        herissonInfos.put("nom", nom);
-        herissonInfos.put("caracteristique", caracteristique);
-        herissonInfos.put("fk_utilisateur", fk_utilisateur.toString());
+        MultiValueMap<String, String> herissonInfos = new LinkedMultiValueMap<>();
+        herissonInfos.add("pk_herisson", pk_herisson.toString());
+        herissonInfos.add("nom", nom);
+        herissonInfos.add("caracteristique", caracteristique);
+        herissonInfos.add("fk_utilisateur", fk_utilisateur.toString());
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url + "putHerisson", herissonInfos, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url + "putHerisson", HttpMethod.PUT, new HttpEntity<>(herissonInfos, new HttpHeaders()), String.class);
 
         return response;
     }

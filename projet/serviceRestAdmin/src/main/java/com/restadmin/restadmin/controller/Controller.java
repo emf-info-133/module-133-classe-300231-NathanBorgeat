@@ -1,15 +1,17 @@
 package com.restadmin.restadmin.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restadmin.restadmin.service.FuseeService;
 import com.restadmin.restadmin.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.Delegate;
 
 import com.restadmin.restadmin.model.Fusee;
 import com.restadmin.restadmin.dto.UserDTO;
@@ -36,7 +38,7 @@ public class Controller {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<UserDTO> login(HttpServletRequest request, @RequestParam String username,
+    public ResponseEntity<UserDTO> login(@RequestParam String username,
             @RequestParam String password) {
         UserDTO newUserDTO = userService.login(username, password);
 
@@ -48,12 +50,12 @@ public class Controller {
         return fuseeService.addFusee(name);
     }
 
-    @PostMapping(path = "/demonteFusee")
+    @DeleteMapping(path = "/demonteFusee")
     public @ResponseBody String demonteFusee(@RequestParam Integer id) {
         return fuseeService.demonteFusee(id);
     }
 
-    @PostMapping(path = "/modifieFusee")
+    @PutMapping(path = "/modifieFusee")
     public @ResponseBody String modifieFusee(@RequestParam Integer id, @RequestParam String name) {
         return fuseeService.modifieFusee(id, name);
     }
@@ -64,8 +66,8 @@ public class Controller {
     }
 
     @PostMapping(path = "/signin")
-    public @ResponseBody String signin(@RequestParam String name, @RequestParam String password) {
-        return userService.signin(name, password);
+    public @ResponseBody String signin(@RequestParam String username, @RequestParam String password) {
+        return userService.signin(username, password);
     }
 
 }

@@ -26,6 +26,9 @@ services:
       context: ./apiGateway # Répertoire du Dockerfile de la Gateway
     ports:
       - "8080:8080" # Mapping de ports entre hôte et conteneur
+    environment:
+      - RESTADMIN_URL=http://rest-admin:8082/restAdmin/
+      - RESTUSER_URL=http://rest-user:8081/restUser/
 
   userdb:
     image: mysql:8.0

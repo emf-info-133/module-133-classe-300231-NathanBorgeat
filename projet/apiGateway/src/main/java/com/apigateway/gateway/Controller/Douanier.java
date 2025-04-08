@@ -2,6 +2,7 @@ package com.apigateway.gateway.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,10 +40,12 @@ public class Douanier {
     // variable de session)
 
     @GetMapping(path = "/getVoyages")
-    public @ResponseBody ResponseEntity<String> getVoyages(HttpSession httpsession,
-            @RequestParam Integer fk_utilisateur) {
-        if (httpsession.getAttribute("username") != null) {
-            return userManager.getVoyages(fk_utilisateur);
+    public @ResponseBody ResponseEntity<String> getVoyages(HttpSession httpsession) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == true) {
+                return ResponseEntity.badRequest().body("Compte utilisateur requis");
+            }
+            return userManager.getVoyages((Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
         }
@@ -50,7 +53,10 @@ public class Douanier {
 
     @GetMapping(path = "/getAllVoyages")
     public @ResponseBody ResponseEntity<String> getAllVoyages(HttpSession httpsession) {
-        if (httpsession.getAttribute("username") != null) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == false) {
+                return ResponseEntity.badRequest().body("Compte admin requis");
+            }
             return userManager.getAllVoyages();
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
@@ -58,10 +64,12 @@ public class Douanier {
     }
 
     @GetMapping(path = "/getHerissons")
-    public @ResponseBody ResponseEntity<String> getHerissons(HttpSession httpsession,
-            @RequestParam Integer fk_utilisateur) {
-        if (httpsession.getAttribute("username") != null) {
-            return userManager.getHerissons(fk_utilisateur);
+    public @ResponseBody ResponseEntity<String> getHerissons(HttpSession httpsession) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == true) {
+                return ResponseEntity.badRequest().body("Compte utilisateur requis");
+            }
+            return userManager.getHerissons((Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
         }
@@ -69,10 +77,12 @@ public class Douanier {
 
     @PostMapping(path = "/addVoyage")
     public @ResponseBody ResponseEntity<String> addNewVoyage(HttpSession httpsession, @RequestParam String destination,
-            @RequestParam Integer herissonId,
-            @RequestParam Integer fk_utilisateur, @RequestParam Integer fk_fusee) {
-        if (httpsession.getAttribute("username") != null) {
-            return userManager.addVoyage(destination, herissonId, fk_utilisateur, fk_fusee);
+            @RequestParam Integer herissonId, @RequestParam Integer fk_fusee) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == true) {
+                return ResponseEntity.badRequest().body("Compte utilisateur requis");
+            }
+            return userManager.addVoyage(destination, herissonId, (Integer) httpsession.getAttribute("pk"), fk_fusee);
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
         }
@@ -80,10 +90,12 @@ public class Douanier {
 
     @PostMapping(path = "/addHerisson")
     public @ResponseBody ResponseEntity<String> addNewHerisson(HttpSession httpsession, @RequestParam String nom,
-            @RequestParam String caracteristique,
-            @RequestParam Integer fk_utilisateur) {
-        if (httpsession.getAttribute("username") != null) {
-            return userManager.addHerisson(nom, caracteristique, fk_utilisateur);
+            @RequestParam String caracteristique) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == true) {
+                return ResponseEntity.badRequest().body("Compte utilisateur requis");
+            }
+            return userManager.addHerisson(nom, caracteristique, (Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
         }
@@ -92,9 +104,13 @@ public class Douanier {
     @PutMapping("/putHerisson")
     public ResponseEntity<String> putHerisson(HttpSession httpsession, @RequestParam Integer pk_herisson,
             @RequestParam String nom,
-            @RequestParam String caracteristique, @RequestParam Integer fk_utilisateur) {
-        if (httpsession.getAttribute("username") != null) {
-            return userManager.modifyHerisson(pk_herisson, nom, caracteristique, fk_utilisateur);
+            @RequestParam String caracteristique) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == true) {
+                return ResponseEntity.badRequest().body("Compte utilisateur requis");
+            }
+            return userManager.modifyHerisson(pk_herisson, nom, caracteristique,
+                    (Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
         }
@@ -123,4 +139,52 @@ public class Douanier {
         return ResponseEntity.ok("Déconnecté");
     }
 
+    @PostMapping(path = "/addFusee")
+    public @ResponseBody ResponseEntity<String> addNewFusee(HttpSession httpsession, @RequestParam String nom) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == false) {
+                return ResponseEntity.badRequest().body("Compte admin requis");
+            }
+            return adminManager.addFusee(nom);
+        } else {
+            return ResponseEntity.badRequest().body("Non connecté");
+        }
+    }
+
+    @PutMapping("/modifieFusee")
+    public ResponseEntity<String> modifieFusee(HttpSession httpsession, @RequestParam Integer pk_fusee,
+            @RequestParam String nom) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == false) {
+                return ResponseEntity.badRequest().body("Compte admin requis");
+            }
+            return adminManager.modifieFusee(pk_fusee, nom);
+        } else {
+            return ResponseEntity.badRequest().body("Non connecté");
+        }
+    }
+
+    @DeleteMapping("/demonteFusee")
+    public ResponseEntity<String> demonteFusee(HttpSession httpsession, @RequestParam Integer pk_fusee) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == false) {
+                return ResponseEntity.badRequest().body("Compte admin requis");
+            }
+            return adminManager.demonteFusee(pk_fusee);
+        } else {
+            return ResponseEntity.badRequest().body("Non connecté");
+        }
+    }
+
+    @GetMapping(path = "/getFusee")
+    public @ResponseBody ResponseEntity<String> getFusee(HttpSession httpsession) {
+        if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
+            if ((boolean) httpsession.getAttribute("admin") == false) {
+                return ResponseEntity.badRequest().body("Compte admin requis");
+            }
+            return adminManager.getFusee();
+        } else {
+            return ResponseEntity.badRequest().body("Non connecté");
+        }
+    }
 }

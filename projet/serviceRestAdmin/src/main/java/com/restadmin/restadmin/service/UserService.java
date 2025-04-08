@@ -22,7 +22,12 @@ public class UserService {
     }
 
     public String signin(String name, String pass) {
-
+        Iterable<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getNom().equals(name)) {
+                return "name already exists";
+            }
+        }
         String hash = hashPass(pass);
         User user = new User();
         user.setNom(name);
