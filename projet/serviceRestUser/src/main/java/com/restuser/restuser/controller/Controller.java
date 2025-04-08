@@ -1,57 +1,71 @@
 package com.restuser.restuser.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpSession;
+import com.restuser.restuser.model.Herisson;
+import com.restuser.restuser.model.Voyage;
+import com.restuser.restuser.service.HerissonService;
+import com.restuser.restuser.service.VoyageService;
 
 @RestController
+@RequestMapping("/restUser")
 public class Controller {
 
+    private final HerissonService herissonService;
+    private final VoyageService voyageService;
+
+    @Autowired
+    public Controller(HerissonService herissonService, VoyageService voyageService) {
+        this.herissonService = herissonService;
+        this.voyageService = voyageService;
+    }
+
     // Handler pour GET
-    @GetMapping(path = "/visites")
-    public ResponseEntity<String> getVisites(HttpSession httpsession) {
-        if (httpsession.getAttribute("username") != null) {
-            Integer visites = (Integer) httpsession.getAttribute("visites");
-            visites++;
-            
-            httpsession.setAttribute("visites", visites);
-
-            return ResponseEntity.ok("Visites : " + visites);
-        } else {
-            return ResponseEntity.badRequest().body("Non connecté");
-        }
-
+    @GetMapping("/")
+    public String getNothing() {
+        return "";
     }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<String> login(HttpSession httpsession, @RequestParam String username,
-            @RequestParam String password) {
-        if ("user".equals(username) && "pass".equals(password)) {
-            httpsession.setAttribute("username", username);
-            httpsession.setAttribute("visites", 0);
-            return ResponseEntity.ok("Connecté");
-        } else {
-            return ResponseEntity.badRequest().body("Non connecté");
-        }
+    @GetMapping(path = "/getVoyages")
+    public @ResponseBody List<Voyage> getVoyages(@RequestParam Integer fk_utilisateur) {
+        return voyageService.getVoyages(fk_utilisateur);
     }
 
-    @PostMapping(path = "/logout")
-    public ResponseEntity<String> logout(HttpSession httpsession) {
-        httpsession.invalidate();
-        return ResponseEntity.ok("Déconnecté");
+    @GetMapping(path = "/getAllVoyages")
+    public @ResponseBody List<Voyage> getAllVoyages() {
+        return voyageService.getAllVoyages();
+    }
+
+    @GetMapping(path = "/getHerissons")
+    public @ResponseBody List<Herisson> getHerissons(@RequestParam Integer fk_utilisateur) {
+        return herissonService.getHerissons(fk_utilisateur);
+    }
+
+    @PostMapping(path = "/addVoyage")
+    public @ResponseBody String addNewVoyage(@RequestParam String destination, @RequestParam Integer herissonId,
+            @RequestParam Integer fk_utilisateur, @RequestParam Integer fk_fusee) {
+        return voyageService.addVoyage(destination, herissonId, fk_utilisateur, fk_fusee);
+    }
+
+    @PostMapping(path = "/addHerisson")
+    public @ResponseBody String addNewHerisson(@RequestParam String nom, @RequestParam String caracteristique,
+            @RequestParam Integer fk_utilisateur) {
+        return herissonService.addHerisson(nom, caracteristique, fk_utilisateur);
+    }
+
+    @PutMapping("/putHerisson")
+    public @ResponseBody String putHerisson(@RequestParam Integer pk_herisson, @RequestParam String nom,
+            @RequestParam String caracteristique, @RequestParam Integer fk_utilisateur) {
+        return herissonService.modifyHerisson(pk_herisson, nom, caracteristique, fk_utilisateur);
     }
 
 }

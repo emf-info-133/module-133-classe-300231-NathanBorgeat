@@ -2,28 +2,25 @@ package com.restuser.restuser.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "t_skieur")
+@Table(name = "t_herisson")
 public class Herisson {
 
     @Id
-    @Column(name = "PK_Skieur", length = 50)
+    @Column(name = "pk_herisson")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(name = "Nom", length = 50)
+    @Column(name = "nom", length = 50)
     private String name;
-    @Column(name = "Position", length = 50)
-    private Integer position;
-
-    @JoinColumn(name = "fk_pays")
+    @Column(name = "caracterisitique", length = 50)
+    private String caracteristique;
+    @Column(name = "fk_utilisateur")
+    private Integer fkUtilisateur;
 
     public Integer getId() {
         return id;
@@ -41,14 +38,20 @@ public class Herisson {
         this.name = name;
     }
 
-    public Integer getPosition() {
-        return position;
+    public String getCaracteristique() {
+        return caracteristique;
     }
 
-    public void setPosition(Integer position) {
-        this.position = position;
+    public void setCaracteristique(String caracteristique) {
+        this.caracteristique = caracteristique;
     }
 
+    public Integer getUtilisateur() {
+        return fkUtilisateur;
+    }
+
+    public void setUtilisateur(Integer fk_utilisateur) {
+        this.fkUtilisateur = fk_utilisateur;
+    }
 
 }
-

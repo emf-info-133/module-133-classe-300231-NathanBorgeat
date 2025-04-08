@@ -11,23 +11,23 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "T_Voyage")
+@Table(name = "t_voyage")
 public class Voyage {
 
     @Id
-    @Column(name = "PK_Voyage", length = 50)
+    @Column(name = "pk_voyage")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(name = "Destination", length = 50)
+    @Column(name = "destination", length = 50)
     private String destination;
 
-    @Column(name = "FK_Utilisateur", length = 50)
-    private Integer fk_utilisateur;
-    @Column(name = "FK_Fusee", length = 50)
+    @Column(name = "fk_utilisateur")
+    private Integer fkUtilisateur;
+    @Column(name = "fk_fusee")
     private Integer fk_fusee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_Herisson")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_herisson")
     private Herisson herisson;
 
     public Integer getId() {
@@ -47,11 +47,11 @@ public class Voyage {
     }
 
     public Integer getUtilisateur() {
-        return fk_utilisateur;
+        return fkUtilisateur;
     }
 
     public void setUtilisateur(Integer fk_utilisateur) {
-        this.fk_utilisateur = fk_utilisateur;
+        this.fkUtilisateur = fk_utilisateur;
     }
 
     public Integer getFusee() {

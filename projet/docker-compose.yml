@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  rest-user:
+    build:
+      context: ./serviceRestUser # Répertoire du Dockerfile du REST User
+    ports:
+      - "8081:8081" # Mapping de ports entre hôte et conteneur
+    environment:
+      - DATABASE_URL=jdbc:mysql://userdb:3306/133_projet_rest1
+    depends_on:
+      - userdb # La base de données doit être démarrée avant le REST User
+
+  rest-admin:
+    build:
+      context: ./serviceRestAdmin # Répertoire du Dockerfile du REST User
+    ports:
+      - "8082:8082" # Mapping de ports entre hôte et conteneur
+    environment:
+      - DATABASE_URL=jdbc:mysql://admindb:3306/133_projet_rest2
+    depends_on:
+      - admindb # La base de données doit être démarrée avant le REST User
+  
+  gateway:
+    build:
+      context: ./apiGateway # Répertoire du Dockerfile de la Gateway
+    ports:
+      - "8080:8080" # Mapping de ports entre hôte et conteneur
+
+  userdb:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Pa14757w0rd
+      MYSQL_DATABASE: 133_projet_rest1
+    ports:
+      - "3308:3306" # Mapping du port MySQL
+    volumes:
+      - userdb_data:/var/lib/mysql
+
+  admindb:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: emf123
+      MYSQL_DATABASE: 133_projet_rest2
+    ports:
+      - "3307:3306" # Mapping du port MySQL
+    volumes:
+      - admindb_data:/var/lib/mysql
+
+volumes:
+  userdb_data:
+  admindb_data:

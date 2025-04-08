@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "RestuserApplication",
+            "request": "launch",
+            "mainClass": "com.restuser.restuser.RestuserApplication",
+            "projectName": "restuser"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-RestadminApplication<restadmin>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.restadmin.restadmin.RestadminApplication",
+            "projectName": "restadmin",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
