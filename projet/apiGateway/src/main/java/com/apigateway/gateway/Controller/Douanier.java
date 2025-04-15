@@ -179,9 +179,6 @@ public class Douanier {
     @GetMapping(path = "/getFusee")
     public @ResponseBody ResponseEntity<String> getFusee(HttpSession httpsession) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == false) {
-                return ResponseEntity.badRequest().body("Compte admin requis");
-            }
             return adminManager.getFusee();
         } else {
             return ResponseEntity.badRequest().body("Non connecté");

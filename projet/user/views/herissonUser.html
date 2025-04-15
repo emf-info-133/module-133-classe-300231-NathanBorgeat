@@ -1,0 +1,62 @@
+<!-- 
+    But :    Projet 151 : Star Rail
+    Auteur : Nathan Borgeat
+    Date :   21.02.2025 / V1.0 
+   -->
+
+   <!DOCTYPE html>
+   <html>
+   
+   <div id="deconnexiondiv"><a href="#" id="deconnexion">Déconnexion</a></div>
+   
+   <h1>AstroHérisson : Utilisateur</h1>
+   
+   <div class="ligne">
+     <select id="herissons">
+       <option>Herisson</option>
+     </select>
+     <button id="nouveauherisson">Nouveau herisson</button>
+     <button id="modifierherisson">Modifier un herisson</button>
+   </div>
+   
+   <table id="tableherisson">
+     <thead>
+       <tr>
+         <th>Nom</th>
+         <th>Caractéristique</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td><input id="nomherisson" type="text" placeholder="Nom du herisson" /></td>
+         <td><input id="caractetistiqueherisson" type="text" placeholder="Caractéristique du herisson" /></td>
+       </tr>
+     </tbody>
+   </table>
+   
+   <div class="ligne">
+     <button id="nouveauvoyage">Nouveau voyage</button>
+   </div>
+   
+   <table id="tablevoyage">
+     <thead>
+       <tr>
+         <th>Destination</th>
+         <th>Herisson</th>
+         <th>Fusee</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td><input id="destinationvoyage" type="text" placeholder="Destination du voyage" /></td>
+         <td><select id="herissonsvoyage">
+             <option>Herisson</option>
+           </select></td>
+         <td><select id="fuseesvoyage">
+             <option>Fusee</option>
+           </select></td>
+       </tr>
+     </tbody>
+   </table>
+   
+   </html>

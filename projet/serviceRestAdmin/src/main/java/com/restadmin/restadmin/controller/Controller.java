@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restadmin.restadmin.service.FuseeService;
 import com.restadmin.restadmin.service.UserService;
 
-import lombok.Delegate;
 
 import com.restadmin.restadmin.model.Fusee;
 import com.restadmin.restadmin.dto.UserDTO;
