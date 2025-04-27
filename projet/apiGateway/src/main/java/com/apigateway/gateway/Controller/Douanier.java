@@ -42,9 +42,6 @@ public class Douanier {
     @GetMapping(path = "/getVoyages")
     public @ResponseBody ResponseEntity<String> getVoyages(HttpSession httpsession) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == true) {
-                return ResponseEntity.badRequest().body("Compte utilisateur requis");
-            }
             return userManager.getVoyages((Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
@@ -66,9 +63,6 @@ public class Douanier {
     @GetMapping(path = "/getHerissons")
     public @ResponseBody ResponseEntity<String> getHerissons(HttpSession httpsession) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == true) {
-                return ResponseEntity.badRequest().body("Compte utilisateur requis");
-            }
             return userManager.getHerissons((Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
@@ -79,9 +73,6 @@ public class Douanier {
     public @ResponseBody ResponseEntity<String> addNewVoyage(HttpSession httpsession, @RequestParam String destination,
             @RequestParam Integer herissonId, @RequestParam Integer fk_fusee) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == true) {
-                return ResponseEntity.badRequest().body("Compte utilisateur requis");
-            }
             return userManager.addVoyage(destination, herissonId, (Integer) httpsession.getAttribute("pk"), fk_fusee);
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
@@ -92,9 +83,6 @@ public class Douanier {
     public @ResponseBody ResponseEntity<String> addNewHerisson(HttpSession httpsession, @RequestParam String nom,
             @RequestParam String caracteristique) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == true) {
-                return ResponseEntity.badRequest().body("Compte utilisateur requis");
-            }
             return userManager.addHerisson(nom, caracteristique, (Integer) httpsession.getAttribute("pk"));
         } else {
             return ResponseEntity.badRequest().body("Non connecté");
@@ -106,9 +94,6 @@ public class Douanier {
             @RequestParam String nom,
             @RequestParam String caracteristique) {
         if (httpsession.getAttribute("pk") != null && httpsession.getAttribute("admin") != null) {
-            if ((boolean) httpsession.getAttribute("admin") == true) {
-                return ResponseEntity.badRequest().body("Compte utilisateur requis");
-            }
             return userManager.modifyHerisson(pk_herisson, nom, caracteristique,
                     (Integer) httpsession.getAttribute("pk"));
         } else {
